@@ -8,6 +8,7 @@ require (
 	github.com/godcong/chronos v0.0.2
 	github.com/godcong/fate v0.0.0-20200331154149-cc89f53e6f17
 	github.com/google/go-cmp v0.3.1 // indirect
+	github.com/google/uuid v1.1.1
 	github.com/jinzhu/configor v1.1.1
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/labstack/echo/v4 v4.1.16
