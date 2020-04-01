@@ -9,10 +9,10 @@ import (
 )
 
 type Config struct {
-	Debug    bool           `yaml:"debug,omitempty" default:"false" `
-	Logger   LoggerConfig   `yaml:"logger,omitempty"`
-	Database DatabaseConfig `yaml:"database,omitempty"`
-	Server   ServerConfig   `yaml:"server,omitempty"`
+	Debug    bool           `yaml:"debug" default:"false"`
+	Logger   LoggerConfig   `yaml:"logger"`
+	Database DatabaseConfig `yaml:"database"`
+	Server   ServerConfig   `yaml:"server"`
 }
 
 type DatabaseConfig struct {
@@ -23,7 +23,7 @@ type DatabaseConfig struct {
 	Name         string `yaml:"name"`
 	MaxIdleCon   int    `yaml:"max_idle_con"`
 	MaxOpenCon   int    `yaml:"max_open_con"`
-	Driver       string `yaml:"driver"`
+	Driver       string `yaml:"driver" default:"mysql"`
 	File         string `yaml:"file"`
 	Dsn          string `yaml:"dsn"`
 	ShowSQL      bool   `yaml:"show_sql"`
@@ -59,7 +59,7 @@ type LoggerConfig struct {
 }
 
 type ServerConfig struct {
-	Addr string `yaml:"host,omitempty" default:":1234"`
+	Addr string `yaml:"addr,omitempty" default:":1234"`
 }
 
 var cfg *Config
@@ -82,5 +82,5 @@ func initConfig(cfgFile string) {
 		}
 	}
 
-	zap.L().Debug("loaded config")
+	zap.L().Debug("loaded config", zap.Any("config", cfg), zap.String("cfgFile", cfgFile))
 }

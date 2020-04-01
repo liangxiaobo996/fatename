@@ -8,6 +8,7 @@ import (
 	"github.com/godcong/fate"
 	fateConfig "github.com/godcong/fate/config"
 	"github.com/labstack/echo/v4"
+	"go.uber.org/zap"
 )
 
 func fateName(ctx echo.Context) error {
@@ -24,7 +25,10 @@ func fateName(ctx echo.Context) error {
 	f := fate.NewFate(lastName, born.Solar().Time(), fate.ConfigOption(fateCfg))
 
 	if err := f.MakeName(context.Background()); err != nil {
-		return err
+		zap.L().Error("make fail", zap.Error(err))
+		return ctx.JSON(http.StatusBadRequest, echo.Map{
+			"error": err.Error(),
+		})
 	}
 
 	return ctx.JSON(http.StatusOK, echo.Map{
@@ -34,8 +38,6 @@ func fateName(ctx echo.Context) error {
 
 func runServer() {
 	e := echo.New()
-
 	e.GET("/fatename", fateName)
-
 	e.Logger.Fatal(e.Start(cfg.Server.Addr))
 }
